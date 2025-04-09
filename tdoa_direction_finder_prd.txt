@@ -1,0 +1,547 @@
+# TDOA Direction Finder System PRD
+*High-Performance Multi-Node Signal Geolocation System*
+
+## Overview
+The Time Difference of Arrival (TDOA) Direction Finder is a sophisticated electromagnetic spectrum monitoring and geolocation system operating across the 100-6000MHz frequency range. The system employs multiple synchronized receiver nodes to detect, analyze, and precisely locate RF signal sources with a Circular Error Probable (CEP) within 50 meters at 20 kilometers range.
+
+This system serves two primary market segments:
+- **Military applications**: Signal intelligence (SIGINT), electronic warfare support, threat detection, and secure communications monitoring
+- **Commercial applications**: Spectrum management, regulatory compliance verification, interference detection, and unauthorized transmission identification
+
+The system's value proposition lies in its ability to provide accurate signal geolocation in complex RF environments, its flexibility in deployment scenarios (fixed, mobile, portable), and its capability to detect and demodulate multiple signal types simultaneously at high sensitivity levels (Maker-shack and below).
+
+## Core Features
+
+### 1. Multi-Node TDOA Geolocation
+- **What it does**: Precisely calculates signal source locations using time differences in signal arrival between 4-5 distributed receiver nodes
+- **Why it's important**: Enables accurate positional fixes without directional antennas or complex mechanical systems
+- **How it works**: GPS-synchronized receivers capture signals, timestamps are cross-correlated, and multilateration algorithms compute probable signal origin
+
+### 2. Wideband Spectrum Monitoring
+- **What it does**: Continuously monitors the frequency spectrum from 100MHz to 6000MHz
+- **Why it's important**: Provides comprehensive coverage of critical communications, radar, and electronic warfare bands
+- **How it works**: SignalHound BB60C receivers perform real-time scanning with adjustable resolution bandwidths and detection thresholds
+
+### 3. Multi-Signal Processing
+- **What it does**: Simultaneously detects, analyzes, and locates multiple signals across the monitored spectrum
+- **Why it's important**: Enables operation in congested RF environments where multiple signals of interest may be present
+- **How it works**: Parallel processing chains identify and separate signals by frequency, modulation type, and other characteristics
+
+### 4. Signal Demodulation and Analysis
+- **What it does**: Extracts and decodes information from detected signals
+- **Why it's important**: Provides signal content and technical parameters for intelligence or compliance purposes
+- **How it works**: Software-defined demodulation components process I/Q data for various modulation types (AM, FM, PSK, etc.)
+
+### 5. Flexible Deployment Configurations
+- **What it does**: Supports fixed, mobile, and portable deployment scenarios
+- **Why it's important**: Adapts to different operational requirements and environments
+- **How it works**: Modular hardware design with ruggedized components and flexible interconnection options
+
+### 6. Real-Time Visualization
+- **What it does**: Displays spectrum activity, signal parameters, and geolocation results with high update rates
+- **Why it's important**: Enables operators to quickly recognize and respond to signals of interest
+- **How it works**: GPU-accelerated visualization using multi-receiver display techniques adapted from cudaSDR
+
+## User Experience
+
+### User Personas
+
+#### Military Signal Intelligence Operator
+- Highly trained in RF signal analysis
+- Needs to quickly identify and locate signals of interest in contested environments
+- Requires detailed technical signal parameters and high confidence in location accuracy
+
+#### Commercial Spectrum Management Professional
+- Focused on regulatory compliance and interference mitigation
+- Needs to identify and document unauthorized transmissions
+- Requires evidentiary-quality records of signal activity and locations
+
+#### System Administrator
+- Responsible for deployment and maintenance of the system
+- Needs easy calibration and diagnostic tools
+- Requires secure remote administration capabilities
+
+### Key User Flows
+
+#### Signal Detection and Geolocation
+1. System automatically detects signal exceeding threshold parameters
+2. Operator is alerted to new signal of interest
+3. Spectrum and waterfall displays show signal characteristics
+4. Map interface displays estimated location with confidence ellipse
+5. Operator can store, tag, or export the detection event
+
+#### Signal Analysis
+1. Operator selects signal of interest from spectrum display
+2. Demodulation automatically applies based on signal type
+3. Signal parameters are displayed (frequency, bandwidth, modulation type)
+4. Demodulated content is available for listening or further analysis
+5. Technical measurements are recorded for reporting
+
+#### System Configuration
+1. Administrator selects deployment configuration
+2. System guides through node placement and calibration
+3. Synchronization status is verified across all nodes
+4. Detection parameters and alerts are configured
+5. System performs self-test and validation
+
+### UI/UX Considerations
+
+- **Multi-Monitor Support**: Primary operations display and secondary analytical displays
+- **Role-Based Interfaces**: Tailored views for operators, analysts, and administrators
+- **Alert Prioritization**: Visual and audible alerts based on signal classification and priority
+- **Map Integration**: Interactive geospatial display with historical tracking
+- **Accessibility**: High-contrast options and keyboard shortcuts for critical functions
+- **Customizable Layouts**: User-configurable workspace arrangements for different operational focuses
+
+## Technical Architecture
+
+### System Components
+
+#### Hardware Components
+1. **Receiver Nodes (4-5 per deployment)**
+   - SignalHound BB60C spectrum analyzers (100MHz-6000MHz)
+   - GPS receivers for precise timing and positioning
+   - Intel i7/i9 processing systems with USB 3.0 controllers
+   - High-stability clock references for synchronization
+   - Ruggedized enclosures appropriate to deployment scenario
+
+2. **Central Processing System**
+   - High-performance computing platform (minimum 8-core processor)
+   - 32GB+ RAM for multi-signal processing
+   - GPU acceleration for visualization and signal processing
+   - High-speed SSD storage (minimum 1TB)
+   - Redundant power systems
+
+3. **Antenna Systems**
+   - Wideband omnidirectional antennas (primary TDOA function)
+   - Optional directional antennas for verification
+   - Low-loss RF cabling with appropriate weather protection
+   - Mounting hardware for various deployment scenarios
+
+#### Software Components
+1. **Signal Acquisition Layer**
+   - BB60C API integration for device control
+   - I/Q data streaming (up to 40MS/s)
+   - GPS time synchronization interface
+   - Automatic gain and calibration control
+
+2. **Signal Processing Layer**
+   - Filter banks for channel isolation
+   - Signal detection algorithms
+   - Demodulation engines for various modulation types
+   - Feature extraction for signal fingerprinting
+
+3. **TDOA Engine**
+   - Cross-correlation algorithms for time difference calculation
+   - Multilateration solver for position estimation
+   - Error estimation and confidence calculation
+   - Kalman filtering for moving transmitter tracking
+
+4. **Map Tile Server and Management System**
+   - Local HTTP tile server for efficient map tile delivery
+   - Tile download and caching system for offline operation
+   - Tile management and versioning
+   - Compression and optimization for storage efficiency
+   - Multi-node tile synchronization
+   - Status monitoring and health checks
+   - Automatic tile updates when online
+
+5. **Visualization System**
+   - Multi-receiver spectrum display
+   - Waterfall time-history displays
+   - Geographic information system integration
+   - 3D visualization capabilities for complex terrain
+
+6. **Analysis and Reporting**
+   - Signal database with search capabilities
+   - Automated report generation
+   - Export functions for external analysis
+   - Historical comparison tools
+
+### Data Models
+
+#### Signal Record
+- Unique identifier
+- Timestamp of detection
+- Frequency parameters (center, bandwidth, etc.)
+- Power measurements
+- Modulation characteristics
+- I/Q samples (selectable duration)
+- Classification tags
+- Associated TDOA calculations
+
+#### Geolocation Record
+- Signal reference ID
+- Estimated position (lat/long)
+- Altitude estimate (when available)
+- Confidence ellipse parameters
+- Contributing node IDs
+- Calculation quality metrics
+- Terrain interaction factors
+
+#### System Configuration
+- Node locations and status
+- Detection thresholds
+- Frequency bands of interest
+- Alert configurations
+- User authorizations
+- Network parameters
+
+### APIs and Integrations
+
+1. **Hardware Interfaces**
+   - SignalHound BB60C API (C/C++ with wrapper libraries)
+   - GPS NMEA and PPS interfaces
+   - Network time protocol for backup synchronization
+
+2. **External System Interfaces**
+   - GIS mapping systems integration
+   - External database connections
+   - SIGINT system integration (military applications)
+   - Spectrum management database connections (commercial)
+
+3. **Developer APIs**
+   - Plugin architecture for custom signal processors
+   - Detection algorithm extension framework
+   - Custom reporting interface
+   - Signal database query API
+
+### Infrastructure Requirements
+
+#### Networking
+- Secure high-bandwidth connections between nodes
+- Optional wireless mesh capabilities for field deployment
+- Encrypted VPN for remote operations
+- Bandwidth management for data transfer optimization
+
+#### Security
+- Multi-factor authentication for system access
+- Role-based access controls
+- Encrypted storage for sensitive data
+- Secure boot and trusted execution environment
+- Physical security features for deployed equipment
+
+#### Power Systems
+- AC operation (110-240V, 50-60Hz)
+- DC operation capability (12-48V)
+- Battery backup with minimum 2-hour runtime
+- Solar options for remote deployment
+- Power consumption monitoring and management
+
+## Development Roadmap
+
+### Phase 1: Foundation (MVP)
+1. **Single-Node Signal Acquisition System**
+   - BB60C integration and driver development
+   - Basic spectrum display and recording
+   - Signal detection algorithms
+   - I/Q data handling infrastructure
+
+2. **Core UI Development**
+   - Spectrum analyzer interface
+   - Basic waterfall display
+   - Configuration controls
+   - User authentication system
+
+3. **Basic Signal Analysis**
+   - Fundamental demodulation capabilities (AM, FM)
+   - Signal measurement tools
+   - Manual recording and playback
+   - Simple reporting tools
+
+### Phase 2: Multi-Node System
+1. **Node Synchronization**
+   - GPS time synchronization implementation
+   - Inter-node communication framework
+   - Time calibration and verification tools
+   - Status monitoring system
+
+2. **TDOA Core Algorithm Implementation**
+   - Cross-correlation engine
+   - Basic time difference calculation
+   - Simple position estimation
+   - Performance benchmarking tools
+
+3. **Enhanced UI**
+   - Multi-receiver display capabilities
+   - Basic mapping integration
+   - System status dashboard
+   - Configuration management interface
+
+### Phase 3: Advanced Geolocation
+1. **Advanced TDOA Algorithms**
+   - Multipath mitigation techniques
+   - Kalman filtering for moving transmitters
+   - Terrain-aware propagation modeling
+   - Confidence calculation improvements
+
+2. **Mapping and Visualization**
+   - 3D terrain visualization
+   - Historical track playback
+   - Heatmap generation for probable locations
+   - Confidence ellipse visualization
+
+3. **Multi-Signal Capabilities**
+   - Parallel processing of multiple signals
+   - Signal separation algorithms
+   - Priority-based processing queue
+   - Resource allocation optimization
+
+### Phase 4: Complete System
+1. **Advanced Signal Processing**
+   - Extended modulation recognition
+   - Automatic signal classification
+   - Signal fingerprinting capabilities
+   - Interference analysis tools
+
+2. **Deployment Optimization**
+   - Fixed installation configurations
+   - Mobile deployment packages
+   - Portable system configurations
+   - Environment-specific optimizations
+
+3. **Enterprise Integration**
+   - Advanced reporting systems
+   - External database integrations
+   - API for third-party extensions
+   - Federation with other monitoring systems
+
+### Phase 5: Enhancements
+1. **AI and Machine Learning Integration**
+   - Automatic signal recognition
+   - Anomaly detection
+   - Predictive location estimation
+   - Self-optimizing algorithms
+
+2. **Advanced Security Features**
+   - Enhanced encryption
+   - Anti-tamper capabilities
+   - Secure execution environment
+   - Covert operation modes
+
+3. **Performance Optimizations**
+   - GPU acceleration for processing
+   - Bandwidth optimization
+   - Real-time processing improvements
+   - Extended frequency coverage options
+
+## Logical Dependency Chain
+
+### Foundation Requirements
+1. **SignalHound BB60C Integration**
+   - Device driver and API wrapper
+   - I/Q data streaming implementation
+   - Basic spectrum analysis capabilities
+   - *Dependency for*: All signal processing functions
+
+2. **Signal Flow Architecture**
+   - Core data structures for signal objects
+   - Processing chain framework
+   - Component interface definitions
+   - *Dependency for*: Multi-signal handling, analysis systems
+
+3. **User Interface Framework**
+   - Application shell and navigation
+   - Authentication and session management
+   - Configuration system
+   - *Dependency for*: All user-facing features
+
+### Early Visible Results
+1. **Spectrum Analyzer Function**
+   - Real-time spectrum display
+   - Basic signal measurements
+   - Recording capabilities
+   - *Provides*: Immediate user value, testing platform
+
+2. **Single-Node Deployment**
+   - Standalone operation capability
+   - Basic signal detection
+   - Local processing and storage
+   - *Provides*: Field testing opportunity, stakeholder demonstrations
+
+3. **Signal Demodulation**
+   - Common modulation support (AM, FM)
+   - Audio output capabilities
+   - Parameter measurement
+   - *Provides*: Functional utility, validation of signal processing
+
+### Incremental Capability Development
+1. **Add Node Synchronization → Enables TDOA**
+2. **Add Basic TDOA → Enables Geolocation**
+3. **Add Mapping → Enables Visual Location**
+4. **Add Multi-Signal → Increases Operational Value**
+5. **Add Advanced Algorithms → Improves Accuracy**
+6. **Add Deployment Options → Expands Use Cases**
+7. **Add Integration APIs → Enables Ecosystem**
+
+### Feature Atomicity and Extensibility
+- Each signal processing component should function independently
+- User interface modules should be loosely coupled
+- Configuration system should support incremental feature addition
+- Storage and database schemas should allow for future expansion
+- Processing algorithms should be replaceable with improved versions
+
+## Risks and Mitigations
+
+### Technical Challenges
+
+1. **Risk**: Time synchronization precision limitations
+   - **Impact**: Reduced geolocation accuracy
+   - **Mitigation**: Implement calibration routines, error modeling, and secondary synchronization methods
+   - **Fallback**: Support for hybrid direction-finding techniques
+
+2. **Risk**: USB 3.0 bandwidth constraints with multiple receivers
+   - **Impact**: Reduced sample rates or dropped data
+   - **Mitigation**: Implement dedicated controllers, buffering strategies, and adaptive rate control
+   - **Fallback**: Distribute receivers across multiple processing nodes
+
+3. **Risk**: CPU processing limitations for multi-signal analysis
+   - **Impact**: Reduced number of simultaneous signals or increased latency
+   - **Mitigation**: Optimize algorithms, implement GPU acceleration, prioritize processing
+   - **Fallback**: Distributed processing architecture
+
+4. **Risk**: Signal detection reliability in low SNR environments
+   - **Impact**: Missed signals of interest or false positives
+   - **Mitigation**: Advanced detection algorithms, machine learning assistance, operator-adjustable thresholds
+   - **Fallback**: Longer integration times with retrospective analysis
+
+### MVP Definition Challenges
+
+1. **Risk**: Feature creep extending development timeline
+   - **Impact**: Delayed deployment and testing
+   - **Mitigation**: Strict feature prioritization, modular architecture, continuous integration
+   - **Fallback**: Phased deployment of capabilities
+
+2. **Risk**: Overemphasis on UI vs. core functionality
+   - **Impact**: System with appealing visuals but limited capability
+   - **Mitigation**: Performance-first development approach, functional testing before UI polish
+   - **Fallback**: Command-line operational mode for core functions
+
+3. **Risk**: Attempting too many signal types in initial version
+   - **Impact**: Diluted development effort, reduced quality across all types
+   - **Mitigation**: Focus on most common signal types first, extensible framework for future types
+   - **Fallback**: Plugin architecture for specialized signal handlers
+
+### Resource Constraints
+
+1. **Risk**: Hardware availability for development and testing
+   - **Impact**: Reduced test coverage, unrealistic development environment
+   - **Mitigation**: Virtual device simulators, staged hardware acquisition, shared test environments
+   - **Fallback**: Focused testing on critical components with available hardware
+
+2. **Risk**: Expertise gaps in specialized areas (RF, DSP, etc.)
+   - **Impact**: Suboptimal implementation of critical algorithms
+   - **Mitigation**: Targeted training, expert consultations, reference implementations
+   - **Fallback**: Simplified algorithms with planned future enhancements
+
+3. **Risk**: Integration testing complexity with distributed system
+   - **Impact**: Unforeseen issues in field deployment
+   - **Mitigation**: Automated integration testing, simulated multi-node environment, staged deployment
+   - **Fallback**: Remote diagnostics and update capabilities
+
+## Appendix
+
+### Research Findings
+
+#### TDOA Accuracy Analysis
+- Theoretical accuracy at 100MHz: ±25m at 20km range
+- Theoretical accuracy at 6000MHz: ±5m at 20km range
+- Primary limiting factors:
+  - Timing synchronization precision
+  - Multipath effects in complex environments
+  - Signal bandwidth limitations
+
+#### Signal Propagation Studies
+- Urban environment effects on accuracy
+- Rural deployment considerations
+- Effects of terrain on multipath
+- Weather impact on higher frequency bands
+
+#### Hardware Benchmarking
+- SignalHound BB60C performance metrics
+- CPU requirements for various processing loads
+- Memory utilization for different signal types
+- Storage requirements for continuous monitoring
+
+### Technical Specifications
+
+#### SignalHound BB60C Key Specifications
+- Frequency range: 9kHz to 6GHz
+- Resolution bandwidths: 10Hz to 10MHz
+- Dynamic range: 90dB (typical)
+- I/Q streaming: Up to 40MS/s
+- Amplitude accuracy: ±2.0 dB
+- Maximum RF input: +10dBm
+
+#### Timing Requirements
+- GPS 1PPS accuracy: ±50ns
+- Inter-node synchronization requirement: <100ns
+- Maximum allowable clock drift: <1ns/s
+
+#### Processing Performance
+- Maximum simultaneous signals: 20+
+- Target processing latency: <1 second from detection to location
+- Recommended CPU: Intel i7/i9, 8+ cores
+- Minimum RAM: 32GB
+- Recommended GPU: NVIDIA RTX series or equivalent
+
+#### Deployment Specifications
+- Fixed installation weight: <50kg per node
+- Mobile configuration power requirements: <500W per node
+- Portable configuration weight: <25kg per node
+- Operating temperature range: -20°C to +55°C
+- Environmental protection: IP65 minimum
+
+## Map Display and Geolocation
+The system will use OpenStreetMap (OSM) as the exclusive map tile provider, supporting both online and offline operation:
+
+1. Online Mode:
+   - Direct integration with OpenStreetMap tile servers (https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png)
+   - Standard OSM zoom levels (0-19)
+   - Proper attribution and usage according to OSM guidelines
+   - Automatic tile caching for improved performance
+   - Rate limiting compliance with OSM usage policies
+   - Fallback servers for reliability
+
+2. Offline Mode:
+   - Local tile server for offline operation
+   - Pre-downloaded tile storage using OSM z/x/y hierarchy
+   - Efficient tile caching and retrieval
+   - Multi-node tile synchronization
+   - Predictive tile caching for expected operation areas
+   - Storage optimization with automatic pruning
+   - Tile integrity verification and versioning
+
+3. Map Features:
+   - Interactive pan and zoom with smooth transitions
+   - Signal location markers with confidence ellipses
+   - Distance and bearing measurement tools
+   - Area calculation with polygon drawing
+   - Historical track visualization with time controls
+   - Clustering for dense signal areas
+   - Keyboard navigation and screen reader support
+   - High-contrast and low-light display modes
+
+4. Performance Requirements:
+   - Map rendering at 60 FPS during normal operation
+   - Smooth handling of 1000+ simultaneous signals
+   - Tile loading latency < 100ms for cached tiles
+   - Efficient memory usage with tile lifecycle management
+   - Graceful degradation under poor network conditions
+   - Automatic quality adjustment based on device capabilities
+
+5. Offline Capabilities:
+   - Operation without internet connectivity
+   - Automatic synchronization when online
+   - Configurable tile retention policies
+   - Storage space management
+   - Tile update scheduling
+   - Coverage area management
+
+6. Security Considerations:
+   - Encrypted tile storage
+   - Secure tile transfer between nodes
+   - Access control for tile management
+   - Audit logging for tile operations
+   - Sanitized tile data handling
+   - Protected configuration storage 

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DF Project - Map Display</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- MarkerCluster CSS -->
+    <link rel="stylesheet" href="MarkerCluster.css" />
+    <link rel="stylesheet" href="MarkerCluster.Default.css" />
+    
+    <!-- Leaflet.Measure CSS -->
+    <link rel="stylesheet" href="leaflet.measure.css" />
+    
+    <!-- Leaflet.Bearing CSS -->
+    <link rel="stylesheet" href="leaflet.bearing.css" />
+    
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map-container {
+            width: 800px;
+            height: 600px;
+            position: relative;
+        }
+        .signal-marker {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .signal-tooltip {
+            font-family: Arial, sans-serif;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .marker-cluster {
+            background-clip: padding-box;
+            border-radius: 15px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .leaflet-control-attribution {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            padding: 4px 8px !important;
+            border-radius: 3px !important;
+            font-size: 11px !important;
+        }
+        .leaflet-control-attribution a {
+            color: #0078A8 !important;
+            text-decoration: none !important;
+        }
+        .leaflet-control-attribution a:hover {
+            text-decoration: underline !important;
+        }
+        .measure-control {
+            background-color: white;
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        }
+        .measure-control button {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        .measure-control button:hover {
+            background-color: #f4f4f4;
+        }
+        .measure-control.active button {
+            background-color: #e6e6e6;
+        }
+    </style>
+</head>
+<body>
+    <div id="map-container"></div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- MarkerCluster JS -->
+    <script src="leaflet.markercluster.js"></script>
+    
+    <!-- Leaflet.Measure JS -->
+    <script src="leaflet.measure.js"></script>
+    
+    <!-- Leaflet.Bearing JS -->
+    <script src="leaflet.bearing.js"></script>
+    
+    <!-- Application JS -->
+    <script async type="text/javascript" src="df_mapping.js"></script>
+</body>
+</html> 
