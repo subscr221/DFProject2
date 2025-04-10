@@ -1,0 +1,128 @@
+{
+  "project": {
+    "name": "TDOA Direction Finder",
+    "version": "1.0.0",
+    "certificationLevel": "DO-178C Level C"
+  },
+  "teams": {
+    "architecture": {
+      "lead": "dev1",
+      "members": ["dev2", "dev3", "dev4", "dev5"],
+      "responsibilities": [
+        "System architecture",
+        "Integration management",
+        "Release planning"
+      ]
+    },
+    "cuda": {
+      "lead": "dev2",
+      "members": ["dev1", "dev3"],
+      "responsibilities": [
+        "GPU acceleration",
+        "Performance optimization",
+        "Memory management"
+      ]
+    },
+    "algorithms": {
+      "lead": "dev3",
+      "members": ["dev1", "dev2"],
+      "responsibilities": [
+        "Signal processing",
+        "TDOA algorithms",
+        "Validation"
+      ]
+    },
+    "network": {
+      "lead": "dev4",
+      "members": ["dev1", "dev5"],
+      "responsibilities": [
+        "Communication",
+        "Synchronization",
+        "Monitoring"
+      ]
+    },
+    "ui": {
+      "lead": "dev5",
+      "members": ["dev1", "dev4"],
+      "responsibilities": [
+        "User interface",
+        "Visualization",
+        "Configuration"
+      ]
+    }
+  },
+  "taskDistribution": {
+    "rules": {
+      "dev1": {
+        "prefix": "ARCH-",
+        "defaultPriority": "high",
+        "requiredReviewers": 2,
+        "areas": ["architecture", "core", "integration"]
+      },
+      "dev2": {
+        "prefix": "CUDA-",
+        "defaultPriority": "high",
+        "requiredReviewers": 2,
+        "areas": ["gpu", "performance", "optimization"]
+      },
+      "dev3": {
+        "prefix": "SIG-",
+        "defaultPriority": "high",
+        "requiredReviewers": 2,
+        "areas": ["algorithms", "processing", "validation"]
+      },
+      "dev4": {
+        "prefix": "NET-",
+        "defaultPriority": "high",
+        "requiredReviewers": 2,
+        "areas": ["network", "sync", "monitoring"]
+      },
+      "dev5": {
+        "prefix": "UI-",
+        "defaultPriority": "high",
+        "requiredReviewers": 2,
+        "areas": ["interface", "visualization", "config"]
+      }
+    }
+  },
+  "compliance": {
+    "reviewRequirements": {
+      "technical": ["dev1", "teamLead"],
+      "certification": ["dev1"],
+      "documentation": ["dev5"],
+      "testing": ["dev3"]
+    },
+    "documentationRules": {
+      "requireTraceability": true,
+      "requireMetadata": true,
+      "requireReviews": true
+    },
+    "validationRules": {
+      "requireUnitTests": true,
+      "requireIntegrationTests": true,
+      "minimumCoverage": 90,
+      "requirePerformanceTests": true
+    }
+  },
+  "automation": {
+    "preTasks": [
+      "npm run validate",
+      "npm run test",
+      "npm run lint"
+    ],
+    "postTasks": [
+      "npm run docs",
+      "npm run coverage"
+    ],
+    "reviewTasks": [
+      "task-master validate-review",
+      "task-master update-status"
+    ]
+  },
+  "notifications": {
+    "taskAssignment": ["slack", "email"],
+    "reviewRequests": ["slack", "email"],
+    "buildFailures": ["slack", "email"],
+    "complianceIssues": ["slack", "email", "dashboard"]
+  }
+} 
